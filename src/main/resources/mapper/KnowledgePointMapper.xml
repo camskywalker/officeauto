@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lizijian.officeauto.mapper.KnowledgePointMapper">
+
+    <select id="getKnowledgePointById" resultType="KnowledgePoint">
+        select id,
+               course_id as courseId,
+               chapter,
+               section,
+               spot,
+               name,
+               ppt_first_draft_at as pptFirstDraftAt,
+               ppt_finalization_at as pptFinalizationAt,
+               video_first_draft_at as videoFirstDraftAt,
+               video_finalization_at as videoFinalizationAt,
+               video_upload_at as videoUploadAt,
+               teacher_id as teacherId,
+               teachereditor_id as teacherEditorId,
+               videoeditor_id as videoEditorId
+        from knowledge_points
+        where id=#{id}
+    </select>
+
+    <select id="getKnowledgesPointByCourseId" resultType="KnowledgePoint">
+        select id,
+               course_id as courseId,
+               chapter,
+               section,
+               spot,
+               name,
+               ppt_first_draft_at as pptFirstDraftAt,
+               ppt_finalization_at as pptFinalizationAt,
+               video_first_draft_at as videoFirstDraftAt,
+               video_finalization_at as videoFinalizationAt,
+               video_upload_at as videoUploadAt,
+               teacher_id as teacherId,
+               teachereditor_id as teacherEditorId,
+               videoeditor_id as videoEditorId
+        from knowledge_points
+        where course_id=#{courseId}
+    </select>
+
+    <insert id="insertKnowledgePoint" parameterType="KnowledgePoint">
+        insert into knowledge_points(course_id,
+                                     chapter,
+                                     section,
+                                     spot,
+                                     name,
+                                     teacher_id,
+                                     teachereditor_id,
+                                     videoeditor_id)
+        values (#{courseId},
+                #{chapter},
+                #{section},
+                #{spot},
+                #{name},
+                #{teacherId},
+                #{teacherEditorId},
+                #{videoEditorId})
+    </insert>
+    
+    <insert id="insertBatchKnowledgePoint" parameterType="java.util.List">
+        insert into knowledge_points (course_id,
+                                      chapter,
+                                      section,
+                                      spot,
+                                      name,
+                                      teacher_id,
+                                      teachereditor_id,
+                                      videoeditor_id)
+            values <foreach collection="list" item="knowledgePoint"  separator=",">
+                   (#{knowledgePoint.courseId},
+                    #{knowledgePoint.chapter},
+                    #{knowledgePoint.section},
+                    #{knowledgePoint.spot},
+                    #{knowledgePoint.name},
+                    #{knowledgePoint.teacherId},
+                    #{knowledgePoint.teacherEditorId},
+                    #{knowledgePoint.videoEditorId})
+            </foreach>
+    </insert>
+
+    <delete id="deleteKnowledgePointById">
+        delete from knowledge_points
+        where id=#{id}
+    </delete>
+
+    <update id="updateKnowledgePointById" parameterType="KnowledgePoint">
+        update knowledge_points
+            <set>
+                <if test="courseId != null">course_id=#{courseId},</if>
+                <if test="chapter != null">chapter=#{chapter},</if>
+                <if test="section != null">section=#{section},</if>
+                <if test="spot != null">spot=#{spot},</if>
+                <if test="name != null">name=#{name},</if>
+                <if test="pptFirstDraftAt != null">ppt_first_draft_at=#{pptFirstDraftAt},</if>
+                <if test="pptFinalizationAt != null">ppt_finalization_at=#{pptFinalizationAt},</if>
+                <if test="videoFirstDraftAt != null">video_first_draft_at=#{videoFirstDraftAt},</if>
+                <if test="videoFinalizationAt != null">video_finalization_at=#{videoFinalizationAt},</if>
+                <if test="videoUploadAt != null">video_upload_at=#{videoUploadAt},</if>
+                <if test="teacherId != null">teacher_id=#{teacherId},</if>
+                <if test="teacherEditorId != null">teachereditor_id=#{teacherEditorId},</if>
+                <if test="videoEditorId != null">videoeditor_id=#{videoEditorId}</if>
+            </set>
+        where id=#{id}
+    </update>
+
+</mapper>

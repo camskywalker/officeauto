@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lizijian.officeauto.mapper.CourseMapper">
+
+    <select id="getCoursesByUserId" resultType="com.lizijian.officeauto.pojo.Course">
+        select course.id, coursename, major_id as majorId, m.majorname as majorName,admin_id as adminId
+        from course
+        join major m on course.major_id = m.id
+        where admin_id=#{userId}
+    </select>
+
+    <select id="getCourseByCourseId" resultType="com.lizijian.officeauto.pojo.Course">
+        select id, coursename, major_id as majorId, admin_id as adminId
+        from course
+        where course.id=#{courseId}
+    </select>
+
+    <select id="getCourseByCourseName" resultType="com.lizijian.officeauto.pojo.Course">
+        select id, coursename, major_id as majorId, admin_id as adminId
+        from course
+        where course.coursename=#{courseName}
+    </select>
+
+    <update id="updateCourseByCourseId" parameterType="com.lizijian.officeauto.pojo.Course">
+        update course
+        <set>
+            <if test="courseName != null">coursename = #{courseName} ,</if>
+            <if test="majorId != null">major_id = #{majorId} ,</if>
+            <if test="adminId != null">admin_id = #{adminId} </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="insertCourseByCourseId" parameterType="com.lizijian.officeauto.pojo.Course" useGeneratedKeys="true" keyProperty="id">
+        insert into course(coursename, major_id, admin_id)
+        values (#{courseName}, #{majorId}, #{adminId})
+    </insert>
+
+    <delete id="deleteCourseByCourseId">
+        delete from course
+        where id=#{courseId}
+    </delete>
+
+    <select id="getCourseProgress" resultType="java.util.Map" >
+        select count(knowledge_points.id) as knowledgePointsSumCount,
+               count(knowledge_points.ppt_first_draft_at) as pptFirstDraftCompleteCount,
+               count(knowledge_points.ppt_finalization_at) as pptFinalizationCompleteCount,
+               count(knowledge_points.video_first_draft_at) as videoFirstDraftCompleteCount,
+               count(knowledge_points.video_finalization_at) as videoFinalizationCompleteCount,
+               count(knowledge_points.video_upload_at) as videoUploadCompleteCount
+        from knowledge_points
+        where knowledge_points.course_id=#{courseId} and (knowledge_points.ppt_first_draft_at IS NOT NULL
+                                         or knowledge_points.ppt_finalization_at IS NOT NULL
+                                         or knowledge_points.video_first_draft_at IS NOT NULL
+                                         or knowledge_points.video_finalization_at IS NOT NULL
+                                         or knowledge_points.video_upload_at IS NOT NULL)
+    </select>
+
+    <insert id="setCourseUserRelation"  >
+        insert into course_user(course_id, user_id)
+        values (#{courseId}, #{userId})
+    </insert>
+
+    <select id="getCourseUserRelation" resultType="java.util.Map">
+        select * from course_user
+        where course_id=#{courseId} and user_id=#{userId}
+    </select>
+
+    <delete id="deleteCourseUserRelation">
+        delete from course_user
+        where user_id=#{userId} and course_id=#{courseId}
+    </delete>
+
+</mapper>

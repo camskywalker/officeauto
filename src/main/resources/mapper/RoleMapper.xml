@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lizijian.officeauto.mapper.RoleMapper">
+
+    <select id="getRoleByZhName" resultType="com.lizijian.officeauto.pojo.Role">
+        select *
+        from role
+        where nameZh=#{zhName}
+    </select>
+
+    <select id="getItem" resultType="java.util.HashMap">
+        select *
+        from user_role
+        where rid=#{roleId} and uid=#{userId}
+    </select>
+
+    <select id="getRoleById" resultType="com.lizijian.officeauto.pojo.Role">
+        select *
+        from role
+        where id=#{roleId}
+    </select>
+
+    <delete id="deleteUserRole">
+        delete from user_role
+        where uid=#{userId} and rid=#{roleId}
+    </delete>
+
+
+    <insert id="insertUserRole" >
+        insert user_role(uid, rid)
+        values (#{userId}, #{roleId})
+    </insert>
+
+    <select id="getUserRoleByUserId" resultType="java.lang.Integer">
+        select rid
+        from user_role
+        where uid = #{userId}
+    </select>
+
+</mapper>
