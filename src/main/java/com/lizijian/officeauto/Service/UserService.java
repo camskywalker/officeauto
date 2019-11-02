@@ -103,7 +103,7 @@ public class UserService implements UserDetailsService {
         User user = userMapper.getUserByUserId(userId);
         if (user == null){
             webApiResult.isNull();
-            webApiResult.setMsg("更新的用户不存在！");
+            webApiResult.setMsg("用户不存在！");
             return webApiResult;
         }else {
             user.setRoles(userMapper.getUserRolesByUid(user.getId()));
@@ -139,6 +139,18 @@ public class UserService implements UserDetailsService {
         webApiResult.isOk();
         webApiResult.setMsg("查找用户列表成功");
         webApiResult.setData(users);
+        return webApiResult;
+    }
+
+    public WebApiResult getUserByCourseId(Integer courseId){
+        WebApiResult webApiResult = new WebApiResult();
+        List<User> userList = userMapper.getUserByCourseId(courseId);
+        for (User user : userList) {
+            user.setRoles(userMapper.getUserRolesByUid(user.getId()));
+        }
+        webApiResult.isOk();
+        webApiResult.setMsg("查询成功");
+        webApiResult.setData(userList);
         return webApiResult;
     }
 

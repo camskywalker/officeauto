@@ -19,7 +19,7 @@
     <select id="getUserByUserId" resultType="com.lizijian.officeauto.pojo.User">
         select *
         from user
-        where user.id = #{uesrId};
+        where user.id = #{userId};
     </select>
 
     <insert id="insertUser" parameterType="com.lizijian.officeauto.pojo.User" useGeneratedKeys="true" keyProperty="id">

@@ -17,6 +17,56 @@ public class KnowledgePoint {
    private Integer teacherId;
    private Integer teacherEditorId;
    private Integer videoEditorId;
+   private String teacherName;
+   private String teacherEditorName;
+   private String videoEditorName;
+
+   @Override
+   public String toString() {
+      return "KnowledgePoint{" +
+              "id=" + id +
+              ", courseId=" + courseId +
+              ", chapter=" + chapter +
+              ", section=" + section +
+              ", spot=" + spot +
+              ", name='" + name + '\'' +
+              ", pptFirstDraftAt=" + pptFirstDraftAt +
+              ", pptFinalizationAt=" + pptFinalizationAt +
+              ", videoFirstDraftAt=" + videoFirstDraftAt +
+              ", videoFinalizationAt=" + videoFinalizationAt +
+              ", videoUploadAt=" + videoUploadAt +
+              ", teacherId=" + teacherId +
+              ", teacherEditorId=" + teacherEditorId +
+              ", videoEditorId=" + videoEditorId +
+              ", teacherName='" + teacherName + '\'' +
+              ", teacherEditorName='" + teacherEditorName + '\'' +
+              ", videoEditorName='" + videoEditorName + '\'' +
+              '}';
+   }
+
+   public String getTeacherName() {
+      return teacherName;
+   }
+
+   public void setTeacherName(String teacherName) {
+      this.teacherName = teacherName;
+   }
+
+   public String getTeacherEditorName() {
+      return teacherEditorName;
+   }
+
+   public void setTeacherEditorName(String teacherEditorName) {
+      this.teacherEditorName = teacherEditorName;
+   }
+
+   public String getVideoEditorName() {
+      return videoEditorName;
+   }
+
+   public void setVideoEditorName(String videoEditorName) {
+      this.videoEditorName = videoEditorName;
+   }
 
    public Integer getId() {
       return id;
@@ -130,24 +180,5 @@ public class KnowledgePoint {
       this.videoEditorId = videoEditorId;
    }
 
-   @Override
-   public String toString() {
-      return "KnowledgePoint{" +
-              "id=" + id +
-              ", courseId=" + courseId +
-              ", chapter=" + chapter +
-              ", section=" + section +
-              ", spot=" + spot +
-              ", name='" + name + '\'' +
-              ", pptFirstDraftAt=" + pptFirstDraftAt +
-              ", pptFinalizationAt=" + pptFinalizationAt +
-              ", videoFirstDraftAt=" + videoFirstDraftAt +
-              ", videoFinalizationAt=" + videoFinalizationAt +
-              ", videoUploadAt=" + videoUploadAt +
-              ", teacherId=" + teacherId +
-              ", teacherEditorId=" + teacherEditorId +
-              ", videoEditorId=" + videoEditorId +
-              '}';
-   }
 }
 

@@ -56,5 +56,10 @@ public class UserController {
         return userService.updateUser(user);
     }
 
+    @GetMapping
+    public WebApiResult getUserListByCourseId(@RequestParam("courseId") Integer courseId){
+        return userService.getUserByCourseId(courseId);
+    }
+
 
 }
