@@ -43,4 +43,9 @@ public class CourseMapperTest {
         courseMapper.updateCourseByCourseId(course);
         System.out.println(courseMapper.getCourseByCourseId(1));
     }
+
+    @Test
+    public void getCourseByUserId(){
+        System.out.println(courseMapper.getCoursesByUserId(1));
+    }
 }

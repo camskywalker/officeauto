@@ -7,7 +7,7 @@
     <select id="getCoursesByUserId" resultType="com.lizijian.officeauto.pojo.Course">
         select course.id, coursename, major_id as majorId, m.majorname as majorName,admin_id as adminId
         from course
-        join major m on course.major_id = m.id
+        left join major m on course.major_id = m.id
         where admin_id=#{userId}
     </select>
 
