@@ -127,9 +127,8 @@ public class UserService implements UserDetailsService {
         return webApiResult;
     }
 
-    public WebApiResult getUsersByAdminName(String adminName){
+    public WebApiResult getUsersByAdminId(Integer adminId){
         WebApiResult webApiResult = new WebApiResult();
-        Integer adminId = userMapper.getUserByUsername(adminName).getId();
         List<User> users = userMapper.getUsersByAdminId(adminId);
         for (User user : users) {
             user.setRoles(userMapper.getUserRolesByUid(user.getId()));

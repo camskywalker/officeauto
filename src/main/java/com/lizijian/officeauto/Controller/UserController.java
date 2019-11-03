@@ -41,9 +41,9 @@ public class UserController {
         return userService.getUserByUsername(username);
     }
 
-    @GetMapping("/usergroup/{adminname}")
-    public WebApiResult getUsersByAdminId(@PathVariable("adminname") String admiName){
-        return userService.getUsersByAdminName(admiName);
+    @GetMapping("/groupbyadminid/{adminId}")
+    public WebApiResult getUsersByAdminId(@PathVariable("adminId") Integer adminId){
+        return userService.getUsersByAdminId(adminId);
     }
 
     @DeleteMapping("/{username}")

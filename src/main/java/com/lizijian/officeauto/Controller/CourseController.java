@@ -22,11 +22,10 @@ public class CourseController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/{username}")
-    public WebApiResult courses(@PathVariable("username") String username){
+    @GetMapping("/groupbyuserid/{userId}")
+    public WebApiResult courses(@PathVariable("userId") Integer userId){
         WebApiResult webApiResult = new WebApiResult();
-        User user = (User) userService.getUserByUsername(username).getData();
-        List<Course> courseList = courseService.getCourseListByUserId(user.getId());
+        List<Course> courseList = courseService.getCourseListByUserId(userId);
         webApiResult.isOk();
         webApiResult.setMsg("查询成功");
         webApiResult.setData(courseList);
