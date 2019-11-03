@@ -2,19 +2,17 @@ package com.lizijian.officeauto.Service;
 
 import com.lizijian.officeauto.mapper.RoleMapper;
 import com.lizijian.officeauto.mapper.UserMapper;
-import com.lizijian.officeauto.pojo.Role;
 import com.lizijian.officeauto.pojo.User;
 import com.lizijian.officeauto.pojo.WebApiResult;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @Service
 public class UserService implements UserDetailsService {
