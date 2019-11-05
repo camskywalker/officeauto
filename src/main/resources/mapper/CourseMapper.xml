@@ -44,18 +44,14 @@
     </delete>
 
     <select id="getCourseProgress" resultType="java.util.Map" >
-        select count(knowledge_points.id) as knowledgePointsSumCount,
+        select count(knowledge_points.course_id) as knowledgePointsSumCount,
                count(knowledge_points.ppt_first_draft_at) as pptFirstDraftCompleteCount,
                count(knowledge_points.ppt_finalization_at) as pptFinalizationCompleteCount,
                count(knowledge_points.video_first_draft_at) as videoFirstDraftCompleteCount,
                count(knowledge_points.video_finalization_at) as videoFinalizationCompleteCount,
                count(knowledge_points.video_upload_at) as videoUploadCompleteCount
         from knowledge_points
-        where knowledge_points.course_id=#{courseId} and (knowledge_points.ppt_first_draft_at IS NOT NULL
-                                         or knowledge_points.ppt_finalization_at IS NOT NULL
-                                         or knowledge_points.video_first_draft_at IS NOT NULL
-                                         or knowledge_points.video_finalization_at IS NOT NULL
-                                         or knowledge_points.video_upload_at IS NOT NULL)
+        where knowledge_points.course_id=#{courseId}
     </select>
 
     <insert id="setCourseUserRelation"  >
