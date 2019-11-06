@@ -4,12 +4,39 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lizijian.officeauto.mapper.CourseMapper">
 
-    <select id="getCoursesByUserId" resultType="com.lizijian.officeauto.pojo.Course">
-        select course.id, coursename, major_id as majorId, m.majorname as majorName,admin_id as adminId
+    <select id="getCoursesByUserId" resultMap="courseResultMap">
+        select course.id as id,
+               course.coursename as coursename,
+               major_id as majorId,
+               major.majorname as majorName,
+               course.admin_id as adminId,
+               course_user.user_id as uid,
+               user.username as username,
+               role.id as rid,
+               role.nameZh as roleNameZh
         from course
-        left join major m on course.major_id = m.id
-        where admin_id=#{userId}
+        left join major  on course.major_id = major.id
+        left join course_user  on course.id = course_user.course_id
+        left join user on user.id = course_user.user_id
+        left join user_role on user.id = user_role.uid
+        left join role  on user_role.rid = role.id
+        where course.admin_id=#{userId}
     </select>
+    <resultMap id="courseResultMap" type="Course">
+        <id property="id" column="id"/>
+        <result property="courseName" column="coursename"/>
+        <result property="majorId" column="majorId"/>
+        <result property="majorName" column="majorname"/>
+        <result property="adminId" column="admin_id"/>
+        <collection property="userList" javaType="list" ofType="User">
+            <id property="id" column="uid"/>
+            <result property="username" column="username"/>
+            <collection property="roles" javaType="list" ofType="Role">
+                <id property="id" column="rid"/>
+                <result property="nameZh" column="roleNameZh"/>
+            </collection>
+        </collection>
+    </resultMap>
 
     <select id="getCourseByCourseId" resultType="com.lizijian.officeauto.pojo.Course">
         select id, coursename, major_id as majorId, admin_id as adminId

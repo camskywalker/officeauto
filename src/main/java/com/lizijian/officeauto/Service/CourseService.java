@@ -28,28 +28,6 @@ public class CourseService {
 
     public List<Course> getCourseListByUserId(Integer userId){
         List<Course> courses = courseMapper.getCoursesByUserId(userId);
-        for (Course course:courses) {
-            List<User> userList = getCourseUserRelationByCourseId(course.getId());
-            ArrayList<User> teacherList = new ArrayList<>();
-            ArrayList<User> teacherEditorList = new ArrayList<>();
-            ArrayList<User> videoEditorList = new ArrayList<>();
-            for (User user : userList) {
-                String userName = user.getUsername();
-                if ("教研".equals(user.getRoles().get(0).getNameZh())){
-                    teacherEditorList.add(user);
-                }else if ("剪辑".equals(user.getRoles().get(0).getNameZh())){
-                    videoEditorList.add(user);
-                }else if ("讲师".equals(user.getRoles().get(0).getNameZh())){
-                    teacherList.add(user);
-                }
-            };
-            course.setTeacherList(teacherList);
-            course.setTeacherEditorList(teacherEditorList);
-            course.setVideoEditorList(videoEditorList);
-
-            Map<String, Long> courseProgress = courseMapper.getCourseProgress(course.getId());
-            course.setProgress(courseProgress);
-        }
         return courses;
     }
 

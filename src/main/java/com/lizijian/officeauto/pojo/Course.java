@@ -9,25 +9,8 @@ public class Course {
     private Integer majorId;
     private String majorName;
     private Integer adminId;
-    private List<User> teacherList;
-    private List<User> teacherEditorList;
-    private List<User> videoEditorList;
-    private Map<String, Long> progress;
+    private List<User> userList;
 
-    @Override
-    public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", courseName='" + courseName + '\'' +
-                ", majorId=" + majorId +
-                ", majorName='" + majorName + '\'' +
-                ", adminId=" + adminId +
-                ", teacherList=" + teacherList +
-                ", teacherEditorList=" + teacherEditorList +
-                ", videoEditorList=" + videoEditorList +
-                ", progress=" + progress +
-                '}';
-    }
 
     public Integer getId() {
         return id;
@@ -69,35 +52,24 @@ public class Course {
         this.adminId = adminId;
     }
 
-    public List<User> getTeacherList() {
-        return teacherList;
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", courseName='" + courseName + '\'' +
+                ", majorId=" + majorId +
+                ", majorName='" + majorName + '\'' +
+                ", adminId=" + adminId +
+                ", userList=" + userList +
+                '}';
     }
 
-    public void setTeacherList(List<User> teacherList) {
-        this.teacherList = teacherList;
+    public List<User> getUserList() {
+        return userList;
     }
 
-    public List<User> getTeacherEditorList() {
-        return teacherEditorList;
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 
-    public void setTeacherEditorList(List<User> teacherEditorList) {
-        this.teacherEditorList = teacherEditorList;
-    }
-
-    public List<User> getVideoEditorList() {
-        return videoEditorList;
-    }
-
-    public void setVideoEditorList(List<User> videoEditorList) {
-        this.videoEditorList = videoEditorList;
-    }
-
-    public Map<String, Long> getProgress() {
-        return progress;
-    }
-
-    public void setProgress(Map<String, Long> progress) {
-        this.progress = progress;
-    }
 }
