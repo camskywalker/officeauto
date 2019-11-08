@@ -43,16 +43,46 @@
         where id=#{id};
     </update>
 
-    <select id="getUsersByAdminId" resultType="com.lizijian.officeauto.pojo.User">
-        select id as id, username as username, email as email, admin_id as adminId
+    <select id="getUsersByAdminId" resultMap="userMap" >
+        select
+               user.id as id,
+               username as username,
+               email as email,
+               admin_id as adminId,
+               role.nameZh as rolennameZh,
+               role.id as rid,
+               role.name as rolename
         from user
+        left join user_role on user.id = user_role.uid
+        left join role on user_role.rid = role.id
         where admin_id=#{adminId}
     </select>
+    <resultMap id="userMap" type="User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="email" column="email"/>
+        <result property="adminId" column="adminId"/>
+        <collection property="roles" javaType="list" ofType="Role">
+            <id property="id" column="rid"/>
+            <result property="name" column="rolename"/>
+            <result property="nameZh" column="rolennameZh"/>
+        </collection>
+    </resultMap>
 
-    <select id="getUserByCourseId" resultType="com.lizijian.officeauto.pojo.User">
-        select user.id as id, username as username
-        from user join course_user on user.id = course_user.user_id
+    <select id="getUserByCourseId" resultMap="userMap" >
+        select user.id as id,
+               username as username,
+               email as email,
+               admin_id as adminId,
+               role.nameZh as rolennameZh,
+               role.id as rid,
+               role.name as rolename
+        from user
+        join course_user on user.id = course_user.user_id
+        left join user_role on user.id = user_role.uid
+        left join role on user_role.rid = role.id
         where course_user.course_id = #{courseId}
+
     </select>
 
 </mapper>

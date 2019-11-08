@@ -130,9 +130,6 @@ public class UserService implements UserDetailsService {
     public WebApiResult getUsersByAdminId(Integer adminId){
         WebApiResult webApiResult = new WebApiResult();
         List<User> users = userMapper.getUsersByAdminId(adminId);
-        for (User user : users) {
-            user.setRoles(userMapper.getUserRolesByUid(user.getId()));
-        }
         webApiResult.isOk();
         webApiResult.setMsg("查找用户列表成功");
         webApiResult.setData(users);
@@ -142,9 +139,6 @@ public class UserService implements UserDetailsService {
     public WebApiResult getUserByCourseId(Integer courseId){
         WebApiResult webApiResult = new WebApiResult();
         List<User> userList = userMapper.getUserByCourseId(courseId);
-        for (User user : userList) {
-            user.setRoles(userMapper.getUserRolesByUid(user.getId()));
-        }
         webApiResult.isOk();
         webApiResult.setMsg("查询成功");
         webApiResult.setData(userList);
