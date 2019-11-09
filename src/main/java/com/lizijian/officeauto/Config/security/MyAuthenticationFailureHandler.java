@@ -19,7 +19,7 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
-                                        AuthenticationException e) throws IOException, ServletException {
+                                        AuthenticationException e) throws IOException {
         httpServletResponse.setContentType("application/json;charset=utf-8");
         WebApiResult webApiResult = new WebApiResult();
         if (e instanceof BadCredentialsException || e instanceof UsernameNotFoundException){

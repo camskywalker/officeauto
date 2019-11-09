@@ -17,7 +17,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
-                                        Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException{
         httpServletResponse.setContentType("application/json;charset=utf-8");
         WebApiResult webApiResult = new WebApiResult();
         ObjectMapper jsonObjectMapper = new ObjectMapper();
