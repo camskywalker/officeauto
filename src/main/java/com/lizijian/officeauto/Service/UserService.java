@@ -29,7 +29,6 @@ public class UserService implements UserDetailsService {
         if (user==null){
             throw new UsernameNotFoundException("用户不存在");
         }
-        user.setRoles(userMapper.getUserRolesByUid(user.getId()));
         return user;
     }
 

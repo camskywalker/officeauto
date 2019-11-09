@@ -17,4 +17,9 @@ public class UserMapperTest {
     public void getUserByCourseIdTset(){
         System.out.println(userMapper.getUserByCourseId(1));
     }
+
+    @Test
+    public void getUserByUsername(){
+        System.out.println(userMapper.getUserByUsername("liumin"));
+    }
 }
