@@ -10,7 +10,6 @@ import org.springframework.context.annotation.ComponentScan;
 //exclude = {SecurityAutoConfiguration.class}
 @SpringBootApplication
 public class OfficeautoApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(OfficeautoApplication.class, args);
     }

@@ -22,4 +22,9 @@ public class UserMapperTest {
     public void getUserByUsername(){
         System.out.println(userMapper.getUserByUsername("liumin"));
     }
+
+    @Test
+    public void getUserByUserId(){
+        System.out.println(userMapper.getUserByUserId(1));
+    }
 }

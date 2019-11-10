@@ -15,7 +15,6 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private Integer adminId;
-    @JsonIgnore
     private String password;
 
     private List<Role> roles;

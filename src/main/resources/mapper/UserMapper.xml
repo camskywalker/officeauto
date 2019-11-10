@@ -26,10 +26,20 @@
         where role.id=user_role.rid and user_role.uid=#{id};
     </select>
 
-    <select id="getUserByUserId" resultType="com.lizijian.officeauto.pojo.User">
-        select *
+    <select id="getUserByUserId" resultMap="userMap" >
+        select
+            user.id as id,
+            username as username,
+            email as email,
+            admin_id as adminId,
+            user.password as password,
+            role.nameZh as rolennameZh,
+            role.id as rid,
+            role.name as rolename
         from user
-        where user.id = #{userId};
+        left join user_role on user.id = user_role.uid
+        left join role on user_role.rid = role.id
+        where user.id=#{userId};
     </select>
 
     <insert id="insertUser" parameterType="com.lizijian.officeauto.pojo.User" useGeneratedKeys="true" keyProperty="id">
@@ -93,7 +103,6 @@
         left join user_role on user.id = user_role.uid
         left join role on user_role.rid = role.id
         where course_user.course_id = #{courseId}
-
     </select>
 
 </mapper>

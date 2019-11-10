@@ -36,14 +36,19 @@ public class UserController {
         return userService.insertUser(user);
     }
 
-    @GetMapping("/{username}")
-    public WebApiResult getUser(@PathVariable("username") String username){
-        return userService.getUserByUsername(username);
+    @GetMapping("/{userId}")
+    public WebApiResult getUser(@PathVariable("userId") Integer userId){
+        return userService.getUserByUserId(userId);
     }
 
     @GetMapping("/groupbyadminid/{adminId}")
     public WebApiResult getUsersByAdminId(@PathVariable("adminId") Integer adminId){
         return userService.getUsersByAdminId(adminId);
+    }
+
+    @GetMapping("/groupbycourseid/{courseId}")
+    public WebApiResult getUserByCourseId(@PathVariable("courseId") Integer courseId){
+        return userService.getUserByCourseId(courseId);
     }
 
     @DeleteMapping("/{username}")
@@ -54,11 +59,6 @@ public class UserController {
     @PutMapping
     public WebApiResult updataUser(User user){
         return userService.updateUser(user);
-    }
-
-    @GetMapping
-    public WebApiResult getUserListByCourseId(@RequestParam("courseId") Integer courseId){
-        return userService.getUserByCourseId(courseId);
     }
 
 

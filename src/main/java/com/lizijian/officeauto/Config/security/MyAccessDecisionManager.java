@@ -3,6 +3,7 @@ package com.lizijian.officeauto.Config.security;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,11 +23,14 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
                        Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (ConfigAttribute configAttribute : collection) {
-            if ("ROLE_LOGIN".equals(configAttribute.getAttribute()) && authentication instanceof UsernamePasswordAuthenticationToken){
+            if ("ROLE_LOGIN".equals(configAttribute.getAttribute())) {
+                if (authentication instanceof UsernamePasswordAuthenticationToken) {
+                    throw new BadCredentialsException("未登录！");
+                }
                 return;
             }
-            for (GrantedAuthority authority : authorities){
-                if (configAttribute.getAttribute().equals(authority.getAuthority())){
+            for (GrantedAuthority authority : authorities) {
+                if (configAttribute.getAttribute().equals(authority.getAuthority())) {
                     return;
                 }
             }
