@@ -71,4 +71,9 @@ public class CourseController {
         return webApiResult;
     }
 
+    @GetMapping("/groupbyuseridfromknowledgepoint/{userId}")
+    public WebApiResult getCourseByUserIdFromKnowledgePoint(@PathVariable("userId") Integer userId){
+        return courseService.getCourseByUserIdFromKnowledgePoint(userId);
+    }
+
 }

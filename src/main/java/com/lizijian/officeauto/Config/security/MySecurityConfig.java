@@ -8,9 +8,11 @@ import org.springframework.context.annotation.Configuration;
 
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -19,6 +21,7 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -33,11 +36,6 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AccessDecisionManager accessDecisionManager() {
         return new MyAccessDecisionManager();
-    }
-
-    @Bean
-    public FilterInvocationSecurityMetadataSource metadataSource() {
-        return new MyMetadataSource();
     }
 
     @Bean
@@ -57,14 +55,17 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .csrf().disable()
                 .cors().and()
+                .authorizeRequests().antMatchers("/login").permitAll()
+                .and()
                 .authorizeRequests()
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/users/**").hasRole("admin")
+                .antMatchers("/courses/**").hasAnyRole("admin","teacheditor","videoeditor","teacher")
+                .antMatchers("/major/**").hasRole("admin")
+                .antMatchers("/knowledgepoints").hasAnyRole("admin","teacheditor","videoeditor","teacher")
                 .and()
                 .addFilter(new JwtVerifyFilter(super.authenticationManager()))
-                .addFilter(new MyUsernamePasswordAuthenticationFilter(super.authenticationManager()))
-                .sessionManagement().disable()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+                .addFilter(new MyJwtUsernamePasswordAuthenticationFilter(super.authenticationManager()))
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
 }

@@ -131,4 +131,11 @@ public class CourseService {
     public Map<String, Long> getCourseProgress(Integer courseId){
         return courseMapper.getCourseProgress(courseId);
     };
+
+    public WebApiResult getCourseByUserIdFromKnowledgePoint(Integer userId){
+        WebApiResult webApiResult = new WebApiResult();
+        webApiResult.isOk();
+        webApiResult.setData(courseMapper.getCourseByUserIdFromKnowledgePoint(userId));
+        return webApiResult;
+    }
 }

@@ -76,6 +76,7 @@
         left join user_role on user.id = user_role.uid
         left join role on user_role.rid = role.id
         where admin_id=#{adminId}
+        ORDER BY role.id
     </select>
     <resultMap id="userMap" type="User">
         <id property="id" column="id"/>

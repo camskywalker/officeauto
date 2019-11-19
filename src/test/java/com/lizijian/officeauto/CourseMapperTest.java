@@ -48,4 +48,9 @@ public class CourseMapperTest {
     public void getCourseByUserId(){
         System.out.println(courseMapper.getCoursesByUserId(1));
     }
+
+    @Test
+    public void getCourseByUserIdFromKnowledgePointTest(){
+        System.out.println(courseMapper.getCourseByUserIdFromKnowledgePoint(48));
+    }
 }

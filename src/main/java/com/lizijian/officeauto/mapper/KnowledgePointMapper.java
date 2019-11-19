@@ -15,6 +15,7 @@ public interface KnowledgePointMapper {
     public void insertBatchKnowledgePoint(List<KnowledgePoint> knowledgePointList);
     public void deleteKnowledgePointById(Integer id);
     public void updateKnowledgePointById(KnowledgePoint knowledgePoint);
+    public List<KnowledgePoint> getKnowledgePointByCourseIdAndUserId(Integer courseId, Integer userId);
 
 
 }

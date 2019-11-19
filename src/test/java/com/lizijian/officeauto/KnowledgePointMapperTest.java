@@ -17,4 +17,9 @@ public class KnowledgePointMapperTest {
     public void getKnowledgesPointByCourseIdTest(){
         System.out.println(knowledgePointMapper.getKnowledgesPointByCourseId(1));
     }
+
+    @Test
+    public void getKnowledgePointBycourseIdAndUserIdTest(){
+        System.out.println(knowledgePointMapper.getKnowledgePointByCourseIdAndUserId(30, 48));
+    }
 }

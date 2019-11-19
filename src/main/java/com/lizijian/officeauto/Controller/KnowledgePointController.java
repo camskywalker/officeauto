@@ -21,8 +21,14 @@ public class KnowledgePointController {
     }
 
     @GetMapping("/getbycourse/{courseid}")
-    public WebApiResult getKnowledgePointListByCourseId(@PathVariable("courseid") Integer courseId){
-        return knowledgePointService.getKnowledgePointListByCourseId(courseId);
+    public WebApiResult getKnowledgePointListByCourseId(@PathVariable("courseid") Integer courseId,
+                                                        @RequestParam(value = "userId", required = false) Integer userId){
+        if (userId == null){
+            return knowledgePointService.getKnowledgePointListByCourseId(courseId);
+        }else {
+            return knowledgePointService.getKnowledgePointByCourseIdAndUserId(courseId, userId);
+        }
+
     }
 
     @PostMapping
@@ -38,7 +44,7 @@ public class KnowledgePointController {
 
     //前端传递的时间格式为“yyyy-MM-dd HH:mm:ss”
     @PutMapping("/{knowledgepointid}")
-    public WebApiResult pdateKnowledgePointById(@PathVariable("knowledgepointid") Integer  knowledgePointId,
+    public WebApiResult updateKnowledgePointById(@PathVariable("knowledgepointid") Integer  knowledgePointId,
                                                 KnowledgePoint knowledgePoint){
         knowledgePoint.setId(knowledgePointId);
         return knowledgePointService.updateKnowledgePointById(knowledgePoint);

@@ -24,4 +24,5 @@ public interface CourseMapper {
                                               @Param("userId") Integer userId);
     public void deleteCourseUserRelation(@Param("courseId") Integer courseId,
                                             @Param("userId") Integer userId);
+    public List<Course> getCourseByUserIdFromKnowledgePoint(Integer userId);
 }

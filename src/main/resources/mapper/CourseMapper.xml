@@ -21,6 +21,7 @@
         left join user_role on user.id = user_role.uid
         left join role  on user_role.rid = role.id
         where course.admin_id=#{userId}
+        order by major_id
     </select>
     <resultMap id="courseResultMap" type="Course">
         <id property="id" column="id"/>
@@ -95,5 +96,14 @@
         delete from course_user
         where user_id=#{userId} and course_id=#{courseId}
     </delete>
+
+    <select id="getCourseByUserIdFromKnowledgePoint" resultType="Course">
+        select distinct course.id, course.coursename
+        from course
+        join knowledge_points  on course.id = knowledge_points.course_id
+        where knowledge_points.videoeditor_id = #{userId}
+           or knowledge_points.teacher_id = #{userId}
+           or knowledge_points.teachereditor_id = #{userId}
+    </select>
 
 </mapper>

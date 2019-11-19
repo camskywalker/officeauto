@@ -91,4 +91,12 @@ public class KnowledgePointService {
         }
         return webApiResult;
     }
+
+    public WebApiResult getKnowledgePointByCourseIdAndUserId(Integer courseId, Integer uesrId){
+        WebApiResult webApiResult = new WebApiResult();
+        List<KnowledgePoint> knowledgesList = knowledgePointMapper.getKnowledgePointByCourseIdAndUserId(courseId, uesrId);
+        webApiResult.isOk();
+        webApiResult.setData(knowledgesList);
+        return webApiResult;
+    }
 }
