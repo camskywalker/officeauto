@@ -5,24 +5,24 @@
 <mapper namespace="com.lizijian.officeauto.mapper.CourseMapper">
 
     <select id="getCoursesByUserId" resultMap="courseResultMap">
-        select course.id as id,
-               course.coursename as coursename,
-               major_id as majorId,
-               major.majorname as majorName,
-               course.admin_id as adminId,
+        select course.id           as id,
+               course.coursename   as coursename,
+               major_id            as majorId,
+               major.majorname     as majorName,
+               course.admin_id     as adminId,
                course_user.user_id as uid,
-               user.username as username,
-               role.id as rid,
-               role.nameZh as roleNameZh,
-               course.finished as finished
+               user.username       as username,
+               role.id             as rid,
+               role.nameZh         as roleNameZh,
+               course.finished     as finished
         from course
-        left join major  on course.major_id = major.id
-        left join course_user  on course.id = course_user.course_id
-        left join user on user.id = course_user.user_id
-        left join user_role on user.id = user_role.uid
-        left join role  on user_role.rid = role.id
-        where course.admin_id=#{userId}
-        order by major_id
+                 left join major on course.major_id = major.id
+                 left join course_user on course.id = course_user.course_id
+                 left join user on user.id = course_user.user_id
+                 left join user_role on user.id = user_role.uid
+                 left join role on user_role.rid = role.id
+        where course.admin_id = #{userId}
+        order by finished, major_id
     </select>
     <resultMap id="courseResultMap" type="Course">
         <id property="id" column="id"/>
@@ -44,13 +44,13 @@
     <select id="getCourseByCourseId" resultType="com.lizijian.officeauto.pojo.Course">
         select id, coursename, major_id as majorId, admin_id as adminId, finished as finished
         from course
-        where course.id=#{courseId}
+        where course.id = #{courseId}
     </select>
 
     <select id="getCourseByCourseName" resultType="com.lizijian.officeauto.pojo.Course">
-        select id, coursename, major_id as majorId, admin_id as adminId , finished as finished
+        select id, coursename, major_id as majorId, admin_id as adminId, finished as finished
         from course
-        where course.coursename=#{courseName}
+        where course.coursename = #{courseName}
     </select>
 
     <update id="updateCourseByCourseId" parameterType="com.lizijian.officeauto.pojo.Course">
@@ -58,57 +58,63 @@
         <set>
             <if test="courseName != null">coursename = #{courseName} ,</if>
             <if test="majorId != null">major_id = #{majorId} ,</if>
-            <if test="adminId != null">admin_id = #{adminId} </if>
+            <if test="adminId != null">admin_id = #{adminId}</if>
         </set>
         where id = #{id}
     </update>
 
-    <insert id="insertCourseByCourseId" parameterType="com.lizijian.officeauto.pojo.Course" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertCourseByCourseId" parameterType="com.lizijian.officeauto.pojo.Course" useGeneratedKeys="true"
+            keyProperty="id">
         insert into course(coursename, major_id, admin_id)
         values (#{courseName}, #{majorId}, #{adminId})
     </insert>
 
     <delete id="deleteCourseByCourseId">
-        delete from course
-        where id=#{courseId}
+        delete
+        from course
+        where id = #{courseId}
     </delete>
 
-    <select id="getCourseProgress" resultType="java.util.Map" >
-        select count(knowledge_points.course_id) as knowledgePointsSumCount,
-               count(knowledge_points.ppt_first_draft_at) as pptFirstDraftCompleteCount,
-               count(knowledge_points.ppt_finalization_at) as pptFinalizationCompleteCount,
-               count(knowledge_points.video_first_draft_at) as videoFirstDraftCompleteCount,
+    <select id="getCourseProgress" resultType="java.util.Map">
+        select count(knowledge_points.course_id)             as knowledgePointsSumCount,
+               count(knowledge_points.ppt_first_draft_at)    as pptFirstDraftCompleteCount,
+               count(knowledge_points.ppt_finalization_at)   as pptFinalizationCompleteCount,
+               count(knowledge_points.video_first_draft_at)  as videoFirstDraftCompleteCount,
                count(knowledge_points.video_finalization_at) as videoFinalizationCompleteCount,
-               count(knowledge_points.video_upload_at) as videoUploadCompleteCount
+               count(knowledge_points.video_upload_at)       as videoUploadCompleteCount
         from knowledge_points
-        where knowledge_points.course_id=#{courseId}
+        where knowledge_points.course_id = #{courseId}
     </select>
 
-    <insert id="setCourseUserRelation"  >
+    <insert id="setCourseUserRelation">
         insert into course_user(course_id, user_id)
         values (#{courseId}, #{userId})
     </insert>
 
     <select id="getCourseUserRelation" resultType="java.util.Map">
-        select * from course_user
-        where course_id=#{courseId} and user_id=#{userId}
+        select *
+        from course_user
+        where course_id = #{courseId}
+          and user_id = #{userId}
     </select>
 
     <delete id="deleteCourseUserRelation">
-        delete from course_user
-        where user_id=#{userId} and course_id=#{courseId}
+        delete
+        from course_user
+        where user_id = #{userId}
+          and course_id = #{courseId}
     </delete>
 
     <select id="getCourseByUserIdFromKnowledgePoint" resultType="Course">
         select distinct course.id, course.coursename
         from course
-        join knowledge_points  on course.id = knowledge_points.course_id
+                 join knowledge_points on course.id = knowledge_points.course_id
         where knowledge_points.videoeditor_id = #{userId}
            or knowledge_points.teacher_id = #{userId}
            or knowledge_points.teachereditor_id = #{userId}
     </select>
 
-    <update id="setFinished" >
+    <update id="setFinished">
         update course
         set course.finished = #{finished}
         where id = #{courseId}
