@@ -10,7 +10,28 @@ public class Course {
     private String majorName;
     private Integer adminId;
     private List<User> userList;
+    private Boolean finished;
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", courseName='" + courseName + '\'' +
+                ", majorId=" + majorId +
+                ", majorName='" + majorName + '\'' +
+                ", adminId=" + adminId +
+                ", userList=" + userList +
+                ", finished=" + finished +
+                '}';
+    }
+
+    public Boolean getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Boolean finished) {
+        this.finished = finished;
+    }
 
     public Integer getId() {
         return id;
@@ -50,18 +71,6 @@ public class Course {
 
     public void setAdminId(Integer adminId) {
         this.adminId = adminId;
-    }
-
-    @Override
-    public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", courseName='" + courseName + '\'' +
-                ", majorId=" + majorId +
-                ", majorName='" + majorName + '\'' +
-                ", adminId=" + adminId +
-                ", userList=" + userList +
-                '}';
     }
 
     public List<User> getUserList() {

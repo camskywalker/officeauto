@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -59,9 +60,12 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/users/**").hasRole("admin")
-                .antMatchers("/courses/**").hasAnyRole("admin","teacheditor","videoeditor","teacher")
+                .antMatchers("/courses/**").hasRole("admin")
                 .antMatchers("/major/**").hasRole("admin")
-                .antMatchers("/knowledgepoints").hasAnyRole("admin","teacheditor","videoeditor","teacher")
+                .antMatchers(HttpMethod.GET,"/knowledgepoints/**").hasAnyRole("admin","teacheditor","videoeditor","teacher")
+                .antMatchers(HttpMethod.PUT,"/knowledgepoints/**").hasAnyRole("admin","teacheditor","videoeditor","teacher")
+                .antMatchers(HttpMethod.POST,"/knowledgepoints/**").hasRole("admin")
+                .antMatchers(HttpMethod.DELETE,"/knowledgepoints/**").hasRole("admin")
                 .and()
                 .addFilter(new JwtVerifyFilter(super.authenticationManager()))
                 .addFilter(new MyJwtUsernamePasswordAuthenticationFilter(super.authenticationManager()))

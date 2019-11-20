@@ -13,7 +13,8 @@
                course_user.user_id as uid,
                user.username as username,
                role.id as rid,
-               role.nameZh as roleNameZh
+               role.nameZh as roleNameZh,
+               course.finished as finished
         from course
         left join major  on course.major_id = major.id
         left join course_user  on course.id = course_user.course_id
@@ -29,6 +30,7 @@
         <result property="majorId" column="majorId"/>
         <result property="majorName" column="majorname"/>
         <result property="adminId" column="admin_id"/>
+        <result property="finished" column="finished"/>
         <collection property="userList" javaType="list" ofType="User">
             <id property="id" column="uid"/>
             <result property="username" column="username"/>
@@ -40,13 +42,13 @@
     </resultMap>
 
     <select id="getCourseByCourseId" resultType="com.lizijian.officeauto.pojo.Course">
-        select id, coursename, major_id as majorId, admin_id as adminId
+        select id, coursename, major_id as majorId, admin_id as adminId, finished as finished
         from course
         where course.id=#{courseId}
     </select>
 
     <select id="getCourseByCourseName" resultType="com.lizijian.officeauto.pojo.Course">
-        select id, coursename, major_id as majorId, admin_id as adminId
+        select id, coursename, major_id as majorId, admin_id as adminId , finished as finished
         from course
         where course.coursename=#{courseName}
     </select>
@@ -105,5 +107,11 @@
            or knowledge_points.teacher_id = #{userId}
            or knowledge_points.teachereditor_id = #{userId}
     </select>
+
+    <update id="setFinished" >
+        update course
+        set course.finished = #{finished}
+        where id = #{courseId}
+    </update>
 
 </mapper>

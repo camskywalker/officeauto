@@ -53,4 +53,9 @@ public class CourseMapperTest {
     public void getCourseByUserIdFromKnowledgePointTest(){
         System.out.println(courseMapper.getCourseByUserIdFromKnowledgePoint(48));
     }
+
+    @Test
+    public void setFinished(){
+        courseMapper.setFinished(26, true);
+    }
 }

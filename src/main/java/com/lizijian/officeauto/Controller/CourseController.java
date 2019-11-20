@@ -76,4 +76,19 @@ public class CourseController {
         return courseService.getCourseByUserIdFromKnowledgePoint(userId);
     }
 
+    @PutMapping("/{courseId}/finished/{finished}")
+    public WebApiResult setFinished(@PathVariable("courseId") Integer courseId,
+                                    @PathVariable("finished") Integer finished){
+        if (finished.equals(1)){
+            return courseService.setFinished(courseId, true);
+        } else if (finished.equals(0)){
+            return courseService.setFinished(courseId, false);
+        } else {
+            WebApiResult webApiResult = new WebApiResult();
+            webApiResult.isErr();
+            webApiResult.setMsg("输入参数不正确，1表示完成，0表示未完成。");
+            return webApiResult;
+        }
+    }
+
 }

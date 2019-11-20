@@ -138,4 +138,12 @@ public class CourseService {
         webApiResult.setData(courseMapper.getCourseByUserIdFromKnowledgePoint(userId));
         return webApiResult;
     }
+
+    public WebApiResult setFinished(Integer courseId, Boolean finished){
+        courseMapper.setFinished(courseId,finished);
+        WebApiResult webApiResult = new WebApiResult();
+        webApiResult.isOk();
+        webApiResult.setMsg("修改成功");
+        return webApiResult;
+    }
 }

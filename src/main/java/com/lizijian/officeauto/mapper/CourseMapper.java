@@ -19,10 +19,12 @@ public interface CourseMapper {
     public Course getCourseByCourseName(String couesrName);
     public Map<String, Long> getCourseProgress(Integer courseId);
     public void setCourseUserRelation(@Param("courseId") Integer courseId,
-                                        @Param("userId") Integer userId);
+                                      @Param("userId") Integer userId);
     public Map<String, Integer> getCourseUserRelation(@Param("courseId") Integer courseId,
-                                              @Param("userId") Integer userId);
+                                                      @Param("userId") Integer userId);
     public void deleteCourseUserRelation(@Param("courseId") Integer courseId,
-                                            @Param("userId") Integer userId);
+                                         @Param("userId") Integer userId);
     public List<Course> getCourseByUserIdFromKnowledgePoint(Integer userId);
+    public void setFinished(@Param("courseId")Integer courseId,
+                            @Param("finished")Boolean finished);
 }
