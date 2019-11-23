@@ -65,6 +65,9 @@ public class ResourcesAuthenticateUtils {
 
     public Boolean assertStuffInAuthenticateResources(HttpServletRequest request, Integer stuffId) {
         User user = (User) request.getAttribute("user");
+        if (!authenticateResourcesRedisTemplate.hasKey(user.getId())) {
+            this.setRedisAuthenticateResources(user);
+        }
         if (!this.assertAuthenticateResourcesInRedis(this.USER, stuffId, user.getId())) {
             this.setRedisAuthenticateResources(user);
         }
@@ -82,5 +85,14 @@ public class ResourcesAuthenticateUtils {
         return this.assertAuthenticateResourcesInRedis(this.COURSE, courseId, user.getId());
     }
 
-
+    public Boolean assertKnowledgePointInAuthenticateResources(HttpServletRequest request, Integer knowledgePointId){
+        User user = (User) request.getAttribute("user");
+        if (!authenticateResourcesRedisTemplate.hasKey(user.getId())) {
+            this.setRedisAuthenticateResources(user);
+        }
+        if (!this.assertAuthenticateResourcesInRedis(this.KNOWLEDGEPOINT, knowledgePointId, user.getId())){
+            this.setRedisAuthenticateResources(user);
+        }
+        return this.assertAuthenticateResourcesInRedis(this.KNOWLEDGEPOINT, knowledgePointId, user.getId());
+    }
 }

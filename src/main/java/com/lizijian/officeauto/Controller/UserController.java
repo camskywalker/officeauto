@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    //只能自己获取自己的用户信息
+    //职能自己获取自己的用户信息
     public WebApiResult getUser(HttpServletRequest request,
                                 HttpServletResponse response,
                                 @PathVariable("userId") Integer userId) {
@@ -65,6 +65,18 @@ public class UserController {
         User user = (User) request.getAttribute("user");
         if (user.getId().equals(adminId)) {
             return userService.getUsersByAdminId(adminId);
+        } else {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return null;
+        }
+    }
+
+    @GetMapping("/groupbycourseid/{courseId}")
+    public WebApiResult getUserByCourseId(HttpServletRequest request,
+                                          HttpServletResponse response,
+                                          @PathVariable("courseId") Integer courseId) {
+        if (resourcesAuthenticateUtils.assertCourseInAuthenticateResources(request, courseId)) {
+            return userService.getUserByCourseId(courseId);
         } else {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return null;
