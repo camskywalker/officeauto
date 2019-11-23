@@ -34,7 +34,7 @@ public class CourseController {
     public WebApiResult courses(HttpServletRequest request, @PathVariable("userId") Integer userId) {
         WebApiResult webApiResult = new WebApiResult();
         User user = (User) request.getAttribute("user");
-        if (user.getId().equals(userId)) {
+        if (userId.equals(user.getId())) {
             List<Course> courseList = courseService.getCourseListByUserId(userId);
             webApiResult.isOk();
             webApiResult.setMsg("查询成功");

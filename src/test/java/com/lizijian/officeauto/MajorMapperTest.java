@@ -39,7 +39,7 @@ public class MajorMapperTest {
 
     @Test
     public void getMajorByMajorNameTest(){
-        System.out.println(majorMapper.getMajorByMajorName("test"));
-        System.out.println(majorMapper.getMajorByMajorName("testnull"));
+//        System.out.println(majorMapper.getMajorByMajorName("test"));
+//        System.out.println(majorMapper.getMajorByMajorName("testnull"));
     }
 }
