@@ -37,12 +37,10 @@ public class KnowledgePointController {
                                                         HttpServletResponse response,
                                                         @PathVariable("courseid") Integer courseId,
                                                         @RequestParam(value = "userId", required = false) Integer userId) {
-        if (userId == null) {
-            if (resourcesAuthenticateUtils.assertCourseInAuthenticateResources(request, courseId)) {
+        if (resourcesAuthenticateUtils.assertCourseInAuthenticateResources(request, courseId)) {
+            if (userId == null) {
                 return knowledgePointService.getKnowledgePointListByCourseId(courseId);
-            }
-        } else {
-            if (resourcesAuthenticateUtils.assertStuffInAuthenticateResources(request, userId)) {
+            } else {
                 return knowledgePointService.getKnowledgePointByCourseIdAndUserId(courseId, userId);
             }
         }
