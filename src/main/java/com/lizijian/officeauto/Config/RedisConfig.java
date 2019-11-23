@@ -12,6 +12,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
 
+    //设置序列化器
     @Bean
     public RedisTemplate<Integer, AuthenticateResources> redisTemplateAuthenticateResources(RedisConnectionFactory factory) {
         RedisTemplate<Integer, AuthenticateResources> redisTemplate = new RedisTemplate<>();
