@@ -5,41 +5,41 @@
 <mapper namespace="com.lizijian.officeauto.mapper.UserMapper">
 
     <select id="getUserByUsername" resultMap="userMap">
-        select
-            user.id as id,
-            username as username,
-            email as email,
-            admin_id as adminId,
-            user.password as password,
-            role.nameZh as rolennameZh,
-            role.id as rid,
-            role.name as rolename
+        select user.id       as id,
+               username      as username,
+               email         as email,
+               admin_id      as adminId,
+               user.password as password,
+               role.nameZh   as rolennameZh,
+               role.id       as rid,
+               role.name     as rolename
         from user
-        left join user_role on user.id = user_role.uid
-        left join role on user_role.rid = role.id
-        where username=#{username};
+                 left join user_role on user.id = user_role.uid
+                 left join role on user_role.rid = role.id
+        where username = #{username};
     </select>
 
     <select id="getUserRolesByUid" resultType="com.lizijian.officeauto.pojo.Role">
         select *
-        from role, user_role
-        where role.id=user_role.rid and user_role.uid=#{id};
+        from role,
+             user_role
+        where role.id = user_role.rid
+          and user_role.uid = #{id};
     </select>
 
-    <select id="getUserByUserId" resultMap="userMap" >
-        select
-            user.id as id,
-            username as username,
-            email as email,
-            admin_id as adminId,
-            user.password as password,
-            role.nameZh as rolennameZh,
-            role.id as rid,
-            role.name as rolename
+    <select id="getUserByUserId" resultMap="userMap">
+        select user.id       as id,
+               username      as username,
+               email         as email,
+               admin_id      as adminId,
+               user.password as password,
+               role.nameZh   as rolennameZh,
+               role.id       as rid,
+               role.name     as rolename
         from user
-        left join user_role on user.id = user_role.uid
-        left join role on user_role.rid = role.id
-        where user.id=#{userId};
+                 left join user_role on user.id = user_role.uid
+                 left join role on user_role.rid = role.id
+        where user.id = #{userId};
     </select>
 
     <insert id="insertUser" parameterType="com.lizijian.officeauto.pojo.User" useGeneratedKeys="true" keyProperty="id">
@@ -48,8 +48,9 @@
     </insert>
 
     <delete id="deleteUserByUserId">
-        delete from user
-        where id=#{id}
+        delete
+        from user
+        where id = #{id}
     </delete>
 
     <update id="updateUser" parameterType="com.lizijian.officeauto.pojo.User">
@@ -58,24 +59,23 @@
             <if test="username != null">username = #{username} ,</if>
             <if test="email != null">email = #{email} ,</if>
             <if test="adminId != null">admin_id = #{adminId} ,</if>
-            <if test="password != null">password = #{password} </if>
+            <if test="password != null">password = #{password}</if>
         </set>
         where id=#{id};
     </update>
 
-    <select id="getUsersByAdminId" resultMap="userMap" >
-        select
-               user.id as id,
-               username as username,
-               email as email,
-               admin_id as adminId,
+    <select id="getUsersByAdminId" resultMap="userMap">
+        select user.id     as id,
+               username    as username,
+               email       as email,
+               admin_id    as adminId,
                role.nameZh as rolennameZh,
-               role.id as rid,
-               role.name as rolename
+               role.id     as rid,
+               role.name   as rolename
         from user
-        left join user_role on user.id = user_role.uid
-        left join role on user_role.rid = role.id
-        where admin_id=#{adminId}
+                 left join user_role on user.id = user_role.uid
+                 left join role on user_role.rid = role.id
+        where admin_id = #{adminId}
         ORDER BY role.id
     </select>
     <resultMap id="userMap" type="User">
@@ -91,19 +91,54 @@
         </collection>
     </resultMap>
 
-    <select id="getUserByCourseId" resultMap="userMap" >
-        select user.id as id,
-               username as username,
-               email as email,
-               admin_id as adminId,
+    <select id="getUserByCourseId" resultMap="userMap">
+        select user.id     as id,
+               username    as username,
+               email       as email,
+               admin_id    as adminId,
                role.nameZh as rolennameZh,
-               role.id as rid,
-               role.name as rolename
+               role.id     as rid,
+               role.name   as rolename
         from user
-        join course_user on user.id = course_user.user_id
-        left join user_role on user.id = user_role.uid
-        left join role on user_role.rid = role.id
+                 join course_user on user.id = course_user.user_id
+                 left join user_role on user.id = user_role.uid
+                 left join role on user_role.rid = role.id
         where course_user.course_id = #{courseId}
     </select>
+
+    <select id="getAuthenticateResourcesByUserId" resultMap="authenticateResourcesMap">
+        select #{userId}                  as userId,
+               knowledge_points.course_id as courseId,
+               knowledge_points.id        as knowledgePointId,
+               null                       as stuffId
+        from knowledge_points
+        where teacher_id = #{userId}
+           or videoeditor_id = #{userId}
+           or teachereditor_id = #{userId};
+    </select>
+
+    <select id="getAuthenticateResourcesByAdminId" resultMap="authenticateResourcesMap">
+        select #{adminId}          as userId,
+               course.id           as courseId,
+               knowledge_points.id as knowledgePointId,
+               null                as stuffId
+        from course
+                 left join knowledge_points on course.id = knowledge_points.course_id
+        where course.admin_id = #{adminId}
+    </select>
+
+    <resultMap id="authenticateResourcesMap" type="AuthenticateResources">
+        <id property="userId" column="userId"/>
+        <collection property="courseIdSet" javaType="java.util.Set" ofType="java.lang.Integer">
+            <result column="courseId"/>
+        </collection>
+        <collection property="knowledgePointIdSet" javaType="java.util.Set" ofType="java.lang.Integer">
+            <result column="knowledgePointId"/>
+        </collection>
+        <collection property="stuffIdSet" javaType="java.util.Set" ofType="java.lang.Integer">
+            <result column="stuffId"/>
+        </collection>
+    </resultMap>
+
 
 </mapper>

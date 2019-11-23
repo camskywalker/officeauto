@@ -1,5 +1,6 @@
 package com.lizijian.officeauto.mapper;
 
+import com.lizijian.officeauto.pojo.AuthenticateResources;
 import com.lizijian.officeauto.pojo.Role;
 import com.lizijian.officeauto.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
@@ -24,5 +25,7 @@ public interface UserMapper {
     List<User> getUsersByAdminId(Integer adminId);
 
     List<User> getUserByCourseId(Integer courseId);
+    AuthenticateResources getAuthenticateResourcesByUserId(Integer userId);
+    AuthenticateResources getAuthenticateResourcesByAdminId(Integer AdminId);
 
 }

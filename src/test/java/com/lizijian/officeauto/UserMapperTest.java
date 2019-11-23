@@ -14,7 +14,7 @@ public class UserMapperTest {
     UserMapper userMapper;
 
     @Test
-    public void getUserByCourseIdTset(){
+    public void getUserByCourseIdTest(){
         System.out.println(userMapper.getUserByCourseId(1));
     }
 
@@ -27,4 +27,15 @@ public class UserMapperTest {
     public void getUserByUserId(){
         System.out.println(userMapper.getUserByUserId(1));
     }
+
+    @Test
+    public void getAuthenticateResourcesByUserIdTest(){
+        System.out.println(userMapper.getAuthenticateResourcesByUserId(18));
+    }
+
+    @Test
+    public void getAuthenticateResourcesByAdminId(){
+        System.out.println(userMapper.getAuthenticateResourcesByAdminId(1));
+    }
+
 }

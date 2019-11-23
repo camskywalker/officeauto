@@ -111,21 +111,6 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public WebApiResult deleteUserByUserName(String userName){
-        User user = userMapper.getUserByUsername(userName);
-        WebApiResult webApiResult = new WebApiResult();
-        if (user == null){
-            webApiResult.isNull();
-            webApiResult.setMsg("删除的用户不存在！");
-            return webApiResult;
-        }
-        userMapper.deleteUserByUserId(user.getId());
-        webApiResult.isOk();
-        webApiResult.setMsg("删除成功");
-        webApiResult.setData(user);
-        return webApiResult;
-    }
-
     public WebApiResult getUsersByAdminId(Integer adminId){
         WebApiResult webApiResult = new WebApiResult();
         List<User> users = userMapper.getUsersByAdminId(adminId);

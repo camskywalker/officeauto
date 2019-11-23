@@ -1,4 +1,4 @@
-package com.lizijian.officeauto.Config.security;
+package com.lizijian.officeauto.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;

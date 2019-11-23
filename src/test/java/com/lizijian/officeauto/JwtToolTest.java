@@ -1,18 +1,15 @@
 package com.lizijian.officeauto;
 
-import com.auth0.jwt.interfaces.Claim;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.lizijian.officeauto.Config.security.JwtTool;
+import com.lizijian.officeauto.utils.JwtTool;
 import com.lizijian.officeauto.pojo.Role;
 import com.lizijian.officeauto.pojo.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

@@ -1,7 +1,6 @@
 package com.lizijian.officeauto.pojo;
 
 import java.util.List;
-import java.util.Map;
 
 public class Course {
     private Integer id;

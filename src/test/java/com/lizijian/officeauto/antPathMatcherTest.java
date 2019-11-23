@@ -1,23 +1,22 @@
 package com.lizijian.officeauto;
 
-import com.lizijian.officeauto.Controller.CourseController;
-import com.lizijian.officeauto.pojo.Course;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.AntPathMatcher;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CourseControllerTest {
-
+public class antPathMatcherTest {
     @Autowired
-    CourseController courseController;
+    AntPathMatcher antPathMatcher;
+
     @Test
-    public void updateCourseTest(){
-        Course course = new Course();
-        course.setCourseName("test");
-        course.setMajorId(1);
+    public void test(){
+        String urI1 = "/courses/12/userrelation";
+        String pattern1 = "/courses/{courseId}/*/{userId}";
+        System.out.println(antPathMatcher.extractUriTemplateVariables(pattern1, urI1));
     }
 }
