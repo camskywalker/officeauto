@@ -34,16 +34,6 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         return NoOpPasswordEncoder.getInstance();
     }
 
-    @Bean
-    public AccessDecisionManager accessDecisionManager() {
-        return new MyAccessDecisionManager();
-    }
-
-    @Bean
-    public AccessDeniedHandler accessDeniedHandler() {
-        return new MyAccessDeniedHandler();
-    }
-
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService)
