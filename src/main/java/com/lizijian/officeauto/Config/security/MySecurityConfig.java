@@ -49,6 +49,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/login").permitAll()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/asr/**").permitAll()
                 .antMatchers("/users/**").hasRole("admin")
                 .antMatchers("/courses/*").hasRole("admin")
                 .antMatchers("/courses/*/finished/*").hasRole("admin")
