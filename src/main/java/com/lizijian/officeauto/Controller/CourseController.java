@@ -47,8 +47,15 @@ public class CourseController {
     }
 
     @PostMapping
-    public WebApiResult addCourse(Course course) {
-        return courseService.insertCourseByCourseId(course);
+    public WebApiResult addCourse(HttpServletRequest request,HttpServletResponse response, Course course) {
+        User user = (User) request.getAttribute("user");
+        if (course.getAdminId().equals(user.getId())){
+            return courseService.insertCourseByCourseId(course);
+        } else {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return null;
+        }
+
     }
 
     @DeleteMapping("/{courseid}")

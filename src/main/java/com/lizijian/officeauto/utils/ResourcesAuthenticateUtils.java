@@ -24,7 +24,6 @@ public class ResourcesAuthenticateUtils {
     private final String COURSE = "course";
     private final String KNOWLEDGEPOINT = "knowledgepoint";
     private final String USER = "user";
-    private final String USER_ROLE = "user_role";
 
     private AuthenticateResources getAuthenticateResourcesByUserId(Integer userId) {
         return userMapper.getAuthenticateResourcesByUserId(userId);
