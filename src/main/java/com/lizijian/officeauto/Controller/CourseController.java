@@ -1,6 +1,5 @@
 package com.lizijian.officeauto.Controller;
 
-
 import com.lizijian.officeauto.Service.CourseService;
 import com.lizijian.officeauto.Service.UserService;
 import com.lizijian.officeauto.pojo.Course;
@@ -9,8 +8,6 @@ import com.lizijian.officeauto.pojo.WebApiResult;
 import com.lizijian.officeauto.utils.ResourcesAuthenticateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;

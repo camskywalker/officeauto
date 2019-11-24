@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 
 
 @RestController
-@RequestMapping("asr")
+@RequestMapping("/asr")
 public class AsrController {
 
     @Autowired
