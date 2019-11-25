@@ -87,4 +87,18 @@ public class OasrCallBackResponse {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public OasrCallBackResponse() {
+    }
+
+    public OasrCallBackResponse(Integer code, Integer requestId, Integer appid, Integer projectid, String text, String audioUrl, Double audioTime, String message) {
+        this.code = code;
+        this.requestId = requestId;
+        this.appid = appid;
+        this.projectid = projectid;
+        this.text = text;
+        this.audioUrl = audioUrl;
+        this.audioTime = audioTime;
+        this.message = message;
+    }
 }

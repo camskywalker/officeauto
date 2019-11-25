@@ -17,6 +17,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -57,39 +58,13 @@ public class AsrService {
         return Integer.valueOf(oasrResponse.getRequestId());
     }
 
-    public OasrCallBackResponse getOasrCallBackResponse(InputStream inputStream) throws IOException {
-
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-        while ((line = br.readLine()) != null) {
-            stringBuilder.append(line);
-        }
-        String[] strings = URLDecoder.decode(stringBuilder.toString(), StandardCharsets.UTF_8).split("&");
-        HashMap<String, String> hashMap = new HashMap<>();
-        for (String string : strings) {
-            String[] split = string.split("=");
-            hashMap.put(split[0], split[1]);
-        }
-        //出现空指针异常待处理
-        OasrCallBackResponse oasrCallBackResponse = new OasrCallBackResponse();
-        oasrCallBackResponse.setAppid(Integer.valueOf(hashMap.get("appid")));
-        oasrCallBackResponse.setCode(Integer.valueOf(hashMap.get("code")));
-        oasrCallBackResponse.setRequestId(Integer.valueOf(hashMap.get("requestId")));
-        oasrCallBackResponse.setProjectid(Integer.valueOf(hashMap.get("projectid")));
-        oasrCallBackResponse.setText(hashMap.get("text"));
-        oasrCallBackResponse.setAudioUrl(hashMap.get("audioUrl"));
-        oasrCallBackResponse.setAudioTime(Double.valueOf(hashMap.get("audioTime")));
-        oasrCallBackResponse.setMessage(hashMap.get("message"));
-        return oasrCallBackResponse;
-    }
-
     public String filePersistence(MultipartFile file) throws IOException {
         String Uuid = UUID.randomUUID().toString();
         String fileName = Uuid + ".mp3";
         String originalPath = ResourceUtils.getURL("classpath:").getPath() + "audio/";
-        //将左侧斜杠去掉，不然报错
-        String path = originalPath.substring(1);
+        //originalPath需要将左侧斜杠去掉，不然报错
+
+        String path = "/var/lib/tomcat/webapps/radio/";
         File dir = new File(path);
         if (!dir.exists()) {
             dir.mkdir();
