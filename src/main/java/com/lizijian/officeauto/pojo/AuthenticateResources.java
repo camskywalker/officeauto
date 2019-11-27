@@ -1,7 +1,6 @@
 package com.lizijian.officeauto.pojo;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 public class AuthenticateResources implements Serializable {

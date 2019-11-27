@@ -5,6 +5,7 @@ import com.lizijian.officeauto.pojo.OasrCallBackResponse;
 import com.lizijian.officeauto.pojo.User;
 import com.lizijian.officeauto.pojo.WebApiResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,27 +24,37 @@ public class AsrController {
     @Autowired
     AsrService asrService;
 
-    @PostMapping
+    @Value("${asr.callbackUrl}")
+    private String callBackUrl;
+
+    @Value("${asr.resourceUrl}")
+    private String resourceUrl;
+
+    @Value("${asr.persistencePath}")
+    private String path;
+
+    @PostMapping("/upload")
     public WebApiResult createAsrTask(HttpServletResponse response,
                                       HttpServletRequest request,
-                                      @RequestParam("file") MultipartFile audioFile) throws IOException {
-        User user = (User) request.getAttribute("user");
-        if (audioFile.isEmpty()) {
+                                      @RequestParam("file") MultipartFile file) throws IOException {
+        WebApiResult webApiResult = new WebApiResult();
+        if (file.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null;
+            webApiResult.isErr();
+            webApiResult.setMsg("文件不能为空");
         } else {
-            String Uuid = asrService.filePersistence(audioFile);
-            String callBackUrl = request.getRequestURL().toString() + "/callback";
-            String resourceUrl = "http://flashworking.cn:8088/radio/" + Uuid + ".mp3";
-            System.out.println(resourceUrl);
-            Integer requestID = asrService.postTencentCloudAsr(resourceUrl, callBackUrl);
-            asrService.createAsrTask(Uuid, 1, requestID);
-            WebApiResult webApiResult = new WebApiResult();
+            System.out.println(this.path);
+            String Uuid = asrService.filePersistence(file, this.path);
+            Integer requestID = asrService.postTencentCloudAsr(this.resourceUrl + Uuid + ".mp3", this.callBackUrl);
+            User user = (User) request.getAttribute("user");
+            System.out.println(this.callBackUrl);
+            System.out.println(this.resourceUrl);
+            asrService.createAsrTask(Uuid, user.getId(), requestID);
             webApiResult.isOk();
             webApiResult.setMsg("上传成功，识别中……");
             webApiResult.setData(Uuid);
-            return webApiResult;
         }
+        return webApiResult;
     }
 
     @PostMapping("/callback")
@@ -59,8 +70,8 @@ public class AsrController {
     ) throws IOException {
         OasrCallBackResponse oasrCallBackResponse = new OasrCallBackResponse(
                 code, requestId, appid, projectid,
-                URLDecoder.decode(text, StandardCharsets.UTF_8),
-                URLDecoder.decode(audioUrl, StandardCharsets.UTF_8),
+                URLDecoder.decode(this.urlDecodeFormat(text), StandardCharsets.UTF_8),
+                URLDecoder.decode(this.urlDecodeFormat(audioUrl), StandardCharsets.UTF_8),
                 audioTime,
                 URLDecoder.decode(message, StandardCharsets.UTF_8)
         );
@@ -72,14 +83,25 @@ public class AsrController {
         writer.close();
     }
 
-    @GetMapping("/{uuid}")
+    @GetMapping("/result/{uuid}")
     public WebApiResult getAsrResult(@PathVariable("uuid") String Uuid) {
         String asrResultText = asrService.getAsrResultText(Uuid);
         WebApiResult webApiResult = new WebApiResult();
-        webApiResult.isOk();
-        webApiResult.setMsg("识别成功");
-        webApiResult.setData(asrResultText);
+        if (asrResultText == null){
+            webApiResult.isErr();
+            webApiResult.setMsg("识别中");
+            webApiResult.setData("内容识别中…………");
+        } else {
+            webApiResult.isOk();
+            webApiResult.setData(asrResultText);
+        }
         return webApiResult;
     }
+
+    //处理urldecode参数，否则遇到单独的%和+会报错。
+    private String urlDecodeFormat(String string){
+        return string.replaceAll("%(?![0-9a-fA-F]{2})", "%25").replaceAll("\\+", "%2B");
+    }
+
 }
 

@@ -13,7 +13,6 @@
         <typeAlias type="com.lizijian.officeauto.pojo.Course" alias="Course"/>
         <typeAlias type="com.lizijian.officeauto.pojo.User" alias="User"/>
         <typeAlias type="com.lizijian.officeauto.pojo.Role" alias="Role"/>
-        <typeAlias type="com.lizijian.officeauto.pojo.Url" alias="Url"/>
         <typeAlias type="com.lizijian.officeauto.pojo.AuthenticateResources" alias="AuthenticateResources"/>
 
     </typeAliases>
