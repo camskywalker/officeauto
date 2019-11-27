@@ -4,7 +4,6 @@ import org.apache.ibatis.annotations.Mapper;
 import com.lizijian.officeauto.pojo.KnowledgePoint;
 
 import java.util.List;
-import java.util.Set;
 
 @Mapper
 public interface KnowledgePointMapper {

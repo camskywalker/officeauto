@@ -1,6 +1,5 @@
 package com.lizijian.officeauto.Config.security;
 
-
 import com.lizijian.officeauto.pojo.User;
 import com.lizijian.officeauto.utils.JwtTool;
 import com.lizijian.officeauto.utils.ResourcesAuthenticateUtils;

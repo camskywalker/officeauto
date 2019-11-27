@@ -1,8 +1,6 @@
 package com.lizijian.officeauto.mapper;
 
 import com.lizijian.officeauto.pojo.Course;
-import com.lizijian.officeauto.pojo.Role;
-import com.lizijian.officeauto.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

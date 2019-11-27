@@ -4,10 +4,7 @@ import com.lizijian.officeauto.mapper.AsrMapper;
 import com.tencent.cloud.asr.offline.sdk.http.OasrRequesterSender;
 import com.tencent.cloud.asr.offline.sdk.model.OasrBytesRequest;
 import com.tencent.cloud.asr.offline.sdk.model.OasrResponse;
-import com.tencent.cloud.asr.realtime.sdk.config.AsrBaseConfig;
-import com.tencent.cloud.asr.realtime.sdk.config.AsrInternalConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
