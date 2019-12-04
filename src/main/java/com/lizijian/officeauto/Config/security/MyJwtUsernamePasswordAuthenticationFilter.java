@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lizijian.officeauto.pojo.User;
 import com.lizijian.officeauto.pojo.WebApiResult;
 import com.lizijian.officeauto.utils.JwtTool;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 
 import javax.servlet.FilterChain;
@@ -19,12 +21,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+
 public class MyJwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+    JwtTool jwtTool;
 
     private AuthenticationManager authenticationManager;
 
-    public MyJwtUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public MyJwtUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager, JwtTool jwtTool) {
         this.authenticationManager = authenticationManager;
+        this.jwtTool = jwtTool;
     }
 
     @Override
@@ -63,7 +69,7 @@ public class MyJwtUsernamePasswordAuthenticationFilter extends UsernamePasswordA
                                          FilterChain chain,
                                          Authentication authResult) throws IOException, ServletException {
         User user = (User)authResult.getPrincipal();
-        String token = JwtTool.generateJWT(user);
+        String token = jwtTool.generateJWT(user);
         response.setStatus(response.SC_OK);
         response.setHeader("content-type", "application/json;charset=UTF-8");
         PrintWriter writer = response.getWriter();

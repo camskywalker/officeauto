@@ -10,29 +10,34 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lizijian.officeauto.pojo.Role;
 import com.lizijian.officeauto.pojo.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.*;
-;
 
 @Component
 public class JwtTool {
 
-    private static ObjectMapper jsonObjectMapper = new ObjectMapper();
+    @Autowired
+    private  ObjectMapper jsonObjectMapper;
 
-    public static String generateJWT(User user) throws JsonProcessingException {
+    @Value("${Algorithm.HMAC.publicKey}")
+    private  String publicKey;
+
+    public  String generateJWT(User user) throws JsonProcessingException {
         String userString = jsonObjectMapper.writeValueAsString(user);
         JWTCreator.Builder builder = JWT.create();
         builder.withClaim("id", user.getId());
         builder.withClaim("username", user.getUsername());
         builder.withClaim("role", jsonObjectMapper.writeValueAsString(user.getRoles().get(0)));
         builder.withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000L));
-        return builder.sign(Algorithm.HMAC256("secretTest"));
+        return builder.sign(Algorithm.HMAC256(publicKey));
     }
 
-    public static User parseJwt(String token) throws IOException {
-        Algorithm algorithm = Algorithm.HMAC256("secretTest");
+    public  User parseJwt(String token) throws IOException {
+        Algorithm algorithm = Algorithm.HMAC256(publicKey);
         JWTVerifier jwtVerifier = JWT.require(algorithm).build();
         DecodedJWT jwt = jwtVerifier.verify(token);
         User user = new User();

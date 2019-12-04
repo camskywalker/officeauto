@@ -1,5 +1,6 @@
 package com.lizijian.officeauto.Config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tencent.cloud.asr.offline.sdk.http.OasrRequesterSender;
 import com.tencent.cloud.asr.realtime.sdk.config.AsrBaseConfig;
 import com.tencent.cloud.asr.realtime.sdk.config.AsrGlobelConfig;
@@ -24,4 +25,10 @@ public class AsrConfig {
         AsrInternalConfig.SUB_SERVICE_TYPE = 0;
         return oasrRequesterSender;
     }
+
+    @Bean
+    ObjectMapper objectMapper(){
+        return new ObjectMapper();
+    }
+
 }

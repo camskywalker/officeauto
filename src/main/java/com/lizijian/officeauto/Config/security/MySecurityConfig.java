@@ -2,6 +2,8 @@ package com.lizijian.officeauto.Config.security;
 
 import com.lizijian.officeauto.Service.UserService;
 
+import com.lizijian.officeauto.utils.JwtTool;
+import com.lizijian.officeauto.utils.ResourcesAuthenticateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +25,12 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    JwtTool jwtTool;
+
+    @Autowired
+    ResourcesAuthenticateUtils resourcesAuthenticateUtils;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -52,15 +60,15 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/courses/*").hasRole("admin")
                 .antMatchers("/courses/*/finished/*").hasRole("admin")
                 .antMatchers("/courses/groupbyuserid/*").hasRole("admin")
-                .antMatchers("/courses/groupbyuseridfromknowledgepoint/*").hasAnyRole("admin","teacheditor","videoeditor","teacher")
+                .antMatchers("/courses/groupbyuseridfromknowledgepoint/*").hasAnyRole("admin", "teacheditor", "videoeditor", "teacher")
                 .antMatchers("/major/**").hasRole("admin")
-                .antMatchers(HttpMethod.GET,"/knowledgepoints/**").hasAnyRole("admin","teacheditor","videoeditor","teacher")
-                .antMatchers(HttpMethod.PUT,"/knowledgepoints/**").hasAnyRole("admin","teacheditor","videoeditor","teacher")
-                .antMatchers(HttpMethod.POST,"/knowledgepoints/**").hasRole("admin")
-                .antMatchers(HttpMethod.DELETE,"/knowledgepoints/**").hasRole("admin")
+                .antMatchers(HttpMethod.GET, "/knowledgepoints/**").hasAnyRole("admin", "teacheditor", "videoeditor", "teacher")
+                .antMatchers(HttpMethod.PUT, "/knowledgepoints/**").hasAnyRole("admin", "teacheditor", "videoeditor", "teacher")
+                .antMatchers(HttpMethod.POST, "/knowledgepoints/**").hasRole("admin")
+                .antMatchers(HttpMethod.DELETE, "/knowledgepoints/**").hasRole("admin")
                 .and()
-                .addFilter(new JwtVerifyFilter(super.authenticationManager()))
-                .addFilter(new MyJwtUsernamePasswordAuthenticationFilter(super.authenticationManager()))
+                .addFilter(new JwtVerifyFilter(super.authenticationManager(), this.jwtTool, this.resourcesAuthenticateUtils))
+                .addFilter(new MyJwtUsernamePasswordAuthenticationFilter(super.authenticationManager(), this.jwtTool))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 

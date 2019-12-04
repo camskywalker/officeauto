@@ -21,11 +21,13 @@ import java.util.List;
 
 public class JwtVerifyFilter extends BasicAuthenticationFilter {
 
-    @Autowired
     ResourcesAuthenticateUtils resourcesAuthenticateUtils;
+    JwtTool jwtTool;
 
-    public JwtVerifyFilter(AuthenticationManager authenticationManager) {
+    public JwtVerifyFilter(AuthenticationManager authenticationManager, JwtTool jwtTool, ResourcesAuthenticateUtils resourcesAuthenticateUtils) {
         super(authenticationManager);
+        this.jwtTool = jwtTool;
+        this.resourcesAuthenticateUtils = resourcesAuthenticateUtils;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class JwtVerifyFilter extends BasicAuthenticationFilter {
         } else {
             try {
                 //判断token
-                User user = JwtTool.parseJwt(authorizationHeader);
+                User user = jwtTool.parseJwt(authorizationHeader);
                 List<SimpleGrantedAuthority> authorities = new ArrayList<>();
                 authorities.add(new SimpleGrantedAuthority(user.getRoles().get(0).getName()));
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
