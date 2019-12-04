@@ -31,4 +31,4 @@ build/
 .vscode/
 
 ### 敏感信息 ###
-*.properties
+.properties
