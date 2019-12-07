@@ -2,13 +2,11 @@ package com.lizijian.officeauto.Service;
 
 import com.lizijian.officeauto.mapper.CourseMapper;
 import com.lizijian.officeauto.mapper.UserMapper;
-import com.lizijian.officeauto.pojo.Course;
-import com.lizijian.officeauto.pojo.Role;
-import com.lizijian.officeauto.pojo.User;
-import com.lizijian.officeauto.pojo.WebApiResult;
+import com.lizijian.officeauto.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -144,5 +142,21 @@ public class CourseService {
         webApiResult.isOk();
         webApiResult.setMsg("修改成功");
         return webApiResult;
+    }
+
+    private final String[] filedNameArr = {"ppt_first_draft_at", "ppt_finalization_at", "video_first_draft_at", "video_finalization_at", "video_upload_at"};
+    public Map<String, List<KnowledgePoint>> getYesterdayCommit(Integer courseId) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String  endTime = simpleDateFormat.format(calendar.getTimeInMillis()) + " 00:00:00";
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        String startTime = simpleDateFormat.format(calendar.getTimeInMillis()) + " 00:00:00";
+
+        HashMap<String, List<KnowledgePoint>> resultMap = new HashMap<>();
+        for (String filedName : this.filedNameArr) {
+            List<KnowledgePoint> knowledgePointList = courseMapper.getCommitByTimeSlot(courseId, filedName, startTime, endTime);
+            resultMap.put(filedName, knowledgePointList);
+        }
+        return resultMap;
     }
 }

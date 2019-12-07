@@ -120,4 +120,28 @@
         where id = #{courseId}
     </update>
 
+    <select id="getCommitByTimeSlot" resultType="KnowledgePoint">
+        select id,
+               course_id                                                         as courseId,
+               chapter,
+               section,
+               spot,
+               name,
+               ppt_first_draft_at                                                as pptFirstDraftAt,
+               ppt_finalization_at                                               as pptFinalizationAt,
+               video_first_draft_at                                              as videoFirstDraftAt,
+               video_finalization_at                                             as videoFinalizationAt,
+               video_upload_at                                                   as videoUploadAt,
+               teacher_id                                                        as teacherId,
+               teachereditor_id                                                  as teacherEditorId,
+               videoeditor_id                                                    as videoEditorId,
+               (select user.username from user where user.id = teacher_id)       as teacherName,
+               (select user.username from user where user.id = teachereditor_id) as teacherEditorName,
+               (select user.username from user where user.id = videoeditor_id)   as videoEditorName
+        from knowledge_points
+        where course_id = #{courseId}
+          and ${filedName} between #{startTime} and #{endTime}
+        order by chapter, section, spot
+    </select>
+
 </mapper>

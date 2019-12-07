@@ -143,4 +143,13 @@ public class CourseController {
         return webApiResult;
     }
 
+
+    @GetMapping("/{courseId}/yesterday")
+    public WebApiResult getYesterdayCommit(@PathVariable("courseId") Integer courseId){
+        WebApiResult webApiResult = new WebApiResult();
+        webApiResult.isOk();
+        webApiResult.setData(courseService.getYesterdayCommit(courseId));
+        return webApiResult;
+    }
+
 }
