@@ -60,7 +60,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/courses/*").hasRole("admin")
                 .antMatchers("/courses/*/finished/*").hasRole("admin")
                 .antMatchers("/courses/groupbyuserid/*").hasRole("admin")
-                .antMatchers("/courses/*/yesterday").hasRole("admin")
+                .antMatchers("/courses/*/yesterday").hasAnyRole("admin", "teacheditor", "videoeditor", "teacher")
                 .antMatchers("/courses/groupbyuseridfromknowledgepoint/*").hasAnyRole("admin", "teacheditor", "videoeditor", "teacher")
                 .antMatchers("/major/**").hasRole("admin")
                 .antMatchers(HttpMethod.GET, "/knowledgepoints/**").hasAnyRole("admin", "teacheditor", "videoeditor", "teacher")

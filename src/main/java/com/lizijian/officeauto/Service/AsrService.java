@@ -1,9 +1,10 @@
 package com.lizijian.officeauto.Service;
 
 import com.lizijian.officeauto.mapper.AsrMapper;
-import com.tencent.cloud.asr.offline.sdk.http.OasrRequesterSender;
-import com.tencent.cloud.asr.offline.sdk.model.OasrBytesRequest;
-import com.tencent.cloud.asr.offline.sdk.model.OasrResponse;
+import com.tencentcloudapi.asr.v20190614.AsrClient;
+import com.tencentcloudapi.asr.v20190614.models.CreateRecTaskRequest;
+import com.tencentcloudapi.asr.v20190614.models.CreateRecTaskResponse;
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +22,7 @@ public class AsrService {
     AsrMapper asrMapper;
 
     @Autowired
-    OasrRequesterSender oasrRequesterSender;
+    AsrClient asrClient;
 
     public void writeAsrCallbackResponse(Integer requestId, String text) {
         asrMapper.writeAsrCallbackResponse(requestId, text);
@@ -31,11 +32,17 @@ public class AsrService {
         asrMapper.createAsrTask(Uuid, userId, requestId);
     }
 
-    public Integer postTencentCloudAsr(String mp3Url, String callBackUrl) {
-        OasrBytesRequest oasrBytesRequest = new OasrBytesRequest(callBackUrl, mp3Url);
-        OasrResponse oasrResponse = oasrRequesterSender.send(oasrBytesRequest);
-        //返回任务Id
-        return Integer.valueOf(oasrResponse.getRequestId());
+    public Integer postTencentCloudAsr(String mp3Url, String callBackUrl) throws TencentCloudSDKException {
+        String params =
+                "{\"EngineModelType\":\"8k_0\"," +
+                "\"ChannelNum\":1," +
+                "\"ResTextFormat\":0," +
+                "\"CallbackUrl\":\"" + callBackUrl + "\"," +
+                "\"SourceType\":0," +
+                "\"Url\":\"" + mp3Url + "\"}";
+        CreateRecTaskRequest req = CreateRecTaskRequest.fromJsonString(params, CreateRecTaskRequest.class);
+        CreateRecTaskResponse response = asrClient.CreateRecTask(req);
+        return response.getData().getTaskId().intValue();
     }
 
     public String filePersistence(MultipartFile file, String path) throws IOException {

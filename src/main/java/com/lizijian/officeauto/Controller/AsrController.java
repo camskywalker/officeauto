@@ -4,6 +4,7 @@ import com.lizijian.officeauto.Service.AsrService;
 import com.lizijian.officeauto.pojo.OasrCallBackResponse;
 import com.lizijian.officeauto.pojo.User;
 import com.lizijian.officeauto.pojo.WebApiResult;
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -36,19 +37,16 @@ public class AsrController {
     @PostMapping("/upload")
     public WebApiResult createAsrTask(HttpServletResponse response,
                                       HttpServletRequest request,
-                                      @RequestParam("file") MultipartFile file) throws IOException {
+                                      @RequestParam("file") MultipartFile file) throws IOException, TencentCloudSDKException {
         WebApiResult webApiResult = new WebApiResult();
         if (file.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             webApiResult.isErr();
             webApiResult.setMsg("文件不能为空");
         } else {
-            System.out.println(this.path);
             String Uuid = asrService.filePersistence(file, this.path);
             Integer requestID = asrService.postTencentCloudAsr(this.resourceUrl + Uuid + ".mp3", this.callBackUrl);
             User user = (User) request.getAttribute("user");
-            System.out.println(this.callBackUrl);
-            System.out.println(this.resourceUrl);
             asrService.createAsrTask(Uuid, user.getId(), requestID);
             webApiResult.isOk();
             webApiResult.setMsg("上传成功，识别中……");
