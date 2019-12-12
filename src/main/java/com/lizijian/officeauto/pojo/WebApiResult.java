@@ -7,8 +7,8 @@ public class WebApiResult {
 
     /**
      * 0:返回正常；
-     * 1：没找到查询对象
-     * 2：未知错误
+     * 1：没找到查询对象；
+     * 2：未知错误；
      */
     private int status;
     private String msg;
