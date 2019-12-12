@@ -3,7 +3,6 @@ package com.lizijian.officeauto.Config.security;
 import com.lizijian.officeauto.pojo.User;
 import com.lizijian.officeauto.utils.JwtTool;
 import com.lizijian.officeauto.utils.ResourcesAuthenticateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
