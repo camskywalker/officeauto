@@ -26,9 +26,9 @@ public class AsyncService {
 
     @Async
     public Future<List<KnowledgePoint>> asyncGetYesterdayCommit(Integer courseId,
-                                                    String filedName,
-                                                    String startTime,
-                                                    String endTime) {
+                                                                String filedName,
+                                                                String startTime,
+                                                                String endTime) {
         List<KnowledgePoint> knowledgePointList = courseMapper.getCommitByTimeSlot(courseId, filedName, startTime, endTime);
         return new AsyncResult<>(knowledgePointList);
     }
