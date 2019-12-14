@@ -32,3 +32,5 @@ build/
 
 ### 敏感信息 ###
 *.properties
+
+*.jar
