@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +24,9 @@ public class CourseService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    AsyncService asyncService;
 
     public List<Course> getCourseListByUserId(Integer userId){
         List<Course> courses = courseMapper.getCoursesByUserId(userId);
@@ -145,6 +150,7 @@ public class CourseService {
     }
 
     private final String[] filedNameArr = {"ppt_first_draft_at", "ppt_finalization_at", "video_first_draft_at", "video_finalization_at", "video_upload_at"};
+
     public Map<String, List<KnowledgePoint>> getYesterdayCommit(Integer courseId) {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -156,6 +162,28 @@ public class CourseService {
         for (String filedName : this.filedNameArr) {
             List<KnowledgePoint> knowledgePointList = courseMapper.getCommitByTimeSlot(courseId, filedName, startTime, endTime);
             resultMap.put(filedName, knowledgePointList);
+        }
+        return resultMap;
+    }
+
+    public Map<String, List<KnowledgePoint>> asyncGetYesterdayCommit(Integer courseId) throws ExecutionException, InterruptedException {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String  endTime = simpleDateFormat.format(calendar.getTimeInMillis()) + " 00:00:00";
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        String startTime = simpleDateFormat.format(calendar.getTimeInMillis()) + " 00:00:00";
+
+        HashMap<String, Future<List<KnowledgePoint>>> taskMap = new HashMap<>();
+        //循环发起异步任务，将字段名与结果以key-value，put到map中
+        for (String filedName : this.filedNameArr) {
+            Future<List<KnowledgePoint>> listFutureTask = asyncService.asyncGetYesterdayCommit(courseId, filedName, startTime, endTime);
+            taskMap.put(filedName, listFutureTask);
+        }
+
+        HashMap<String, List<KnowledgePoint>> resultMap = new HashMap<>();
+        for (Map.Entry<String, Future<List<KnowledgePoint>>> entry : taskMap.entrySet()) {
+            //遍历map，获取任务结果
+            resultMap.put(entry.getKey(), entry.getValue().get());
         }
         return resultMap;
     }

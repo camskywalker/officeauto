@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/courses")
@@ -145,11 +146,10 @@ public class CourseController {
 
 
     @GetMapping("/{courseId}/yesterday")
-    public WebApiResult getYesterdayCommit(@PathVariable("courseId") Integer courseId){
+    public WebApiResult getYesterdayCommit(@PathVariable("courseId") Integer courseId) throws ExecutionException, InterruptedException {
         WebApiResult webApiResult = new WebApiResult();
         webApiResult.isOk();
-        webApiResult.setData(courseService.getYesterdayCommit(courseId));
+        webApiResult.setData(courseService.asyncGetYesterdayCommit(courseId));
         return webApiResult;
     }
-
 }
