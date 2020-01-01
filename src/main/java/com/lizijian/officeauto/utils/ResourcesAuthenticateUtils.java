@@ -38,7 +38,7 @@ public class ResourcesAuthenticateUtils {
         return authenticateResources;
     }
 
-    private void setRedisAuthenticateResources(User user) {
+    public void setRedisAuthenticateResources(User user) {
         AuthenticateResources authenticateResources;
         if ("ROLE_admin".equals(user.getRoles().get(0).getName())) {
             authenticateResources = this.getAuthenticateResourcesByAdminId(user.getId());
